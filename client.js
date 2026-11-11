@@ -38,33 +38,44 @@ window.__ModuleLoader__.load({
     };
 
     injectCss(CSS_ID, `
-      .dsh-hub { display: flex; flex-direction: column; gap: 14px; padding: 18px 26px 44px; overflow-y: auto; height: 100%; box-sizing: border-box; max-width: 820px; }
-      .dsh-hub-top { display: flex; align-items: baseline; gap: 10px; padding: 0 4px 2px; }
-      .dsh-hub-top-title { font-size: 17px; font-weight: 600; color: var(--dsw-alias-label-primary, #f0f1f3); }
-      .dsh-hub-top-sub { font-size: 12px; color: var(--dsw-alias-label-tertiary, #8a8f98); }
-      .dsh-hub-section { background: var(--dsw-alias-fill-secondary, rgba(127,127,127,.06)); border: 1px solid var(--dsw-alias-border, rgba(127,127,127,.10)); border-radius: 12px; padding: 10px 12px 8px; }
-      .dsh-hub-head { display: flex; align-items: center; gap: 8px; padding: 2px 4px 8px; color: var(--dsw-alias-label-secondary, #9aa0a6); font-size: 12px; font-weight: 600; letter-spacing: .05em; }
+      .dsh-hub { width: 100%; box-sizing: border-box; --hub-gap: clamp(12px, 1.1vw, 20px); display: flex; flex-direction: column; gap: var(--hub-gap); padding: clamp(16px, 1.6vw, 30px) clamp(20px, 2.4vw, 44px) 48px; overflow-y: auto; height: 100%; box-sizing: border-box; max-width: 1720px; margin: 0 auto; font-size: clamp(12.5px, 0.85vw, 14px); }
+      .dsh-hub-top { display: flex; align-items: baseline; gap: 12px; padding: 0 2px 2px; }
+      .dsh-hub-top-title { font-size: clamp(16px, 1.25vw, 20px); font-weight: 650; color: var(--dsw-alias-label-primary, #f0f1f3); letter-spacing: .01em; }
+      .dsh-hub-top-sub { font-size: clamp(11px, 0.8vw, 13px); color: var(--dsw-alias-label-tertiary, #8a8f98); }
+      .dsh-hub-kpis { display: grid; grid-template-columns: repeat(4, 1fr); gap: var(--hub-gap); }
+      .dsh-hub-kpi { display: flex; flex-direction: column; gap: 4px; padding: clamp(12px, 1.1vw, 20px) clamp(14px, 1.3vw, 24px); border-radius: 14px; background: var(--dsw-alias-fill-secondary, rgba(127,127,127,.06)); border: 1px solid var(--dsw-alias-border, rgba(127,127,127,.10)); cursor: default; }
+      .dsh-hub-kpi-num { font-size: clamp(22px, 2vw, 32px); font-weight: 650; font-variant-numeric: tabular-nums; line-height: 1.1; color: var(--dsw-alias-label-primary, #f0f1f3); }
+      .dsh-hub-kpi-label { font-size: clamp(11.5px, 0.85vw, 13px); color: var(--dsw-alias-label-tertiary, #8a8f98); display: flex; align-items: center; gap: 7px; }
+      .dsh-hub-kpi-accent { width: 7px; height: 7px; border-radius: 50%; }
+      .dsh-hub-kpi-accent.red { background: #eb5a46; }
+      .dsh-hub-kpi-accent.green { background: #3fb96f; }
+      .dsh-hub-kpi-accent.amber { background: #e8a33d; }
+      .dsh-hub-kpi-accent.grey { background: var(--dsw-alias-label-tertiary, #7d828a); }
+      .dsh-hub-grid2 { display: grid; grid-template-columns: 1fr 1fr; gap: var(--hub-gap); align-items: start; }
+      .dsh-hub-section { background: var(--dsw-alias-fill-secondary, rgba(127,127,127,.06)); border: 1px solid var(--dsw-alias-border, rgba(127,127,127,.10)); border-radius: 12px; padding: clamp(10px, 0.9vw, 16px) clamp(12px, 1.1vw, 18px) 8px; min-width: 0; }
+      .dsh-hub-head { display: flex; align-items: center; gap: 8px; padding: 2px 4px clamp(8px, 0.7vw, 12px); color: var(--dsw-alias-label-secondary, #9aa0a6); font-size: clamp(12px, 0.85vw, 13.5px); font-weight: 600; letter-spacing: .05em; }
       .dsh-hub-count { min-width: 20px; text-align: center; border-radius: 999px; padding: 0 7px; line-height: 17px; background: var(--dsw-alias-fill-tertiary, rgba(127,127,127,.14)); font-size: 11px; font-weight: 500; font-variant-numeric: tabular-nums; }
       .dsh-hub-waiting .dsh-hub-count { background: rgba(235, 90, 70, .16); color: #f16a55; }
       .dsh-hub-running .dsh-hub-count { background: rgba(63, 185, 111, .16); color: #4ec27e; }
       .dsh-hub-favorites .dsh-hub-count { background: rgba(232, 163, 61, .16); color: #e8a33d; }
       .dsh-hub-rows { display: flex; flex-direction: column; }
-      .dsh-hub-row { display: flex; align-items: center; gap: 10px; padding: 8px 10px; border-radius: 9px; cursor: pointer; transition: background .12s ease; }
+      .dsh-hub-rows.grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(clamp(280px, 22vw, 420px), 1fr)); gap: 2px 10px; }
+      .dsh-hub-row { display: flex; align-items: center; gap: 10px; padding: clamp(8px, 0.75vw, 12px) clamp(10px, 0.9vw, 14px); border-radius: 9px; cursor: pointer; transition: background .12s ease; min-width: 0; }
       .dsh-hub-row:hover { background: var(--dsw-alias-fill-tertiary, rgba(127,127,127,.09)); }
-      .dsh-hub-star { flex: none; border: 0; background: transparent; color: var(--dsw-alias-label-tertiary, #7d828a); font-size: 15px; line-height: 1; padding: 2px 4px; border-radius: 5px; cursor: pointer; opacity: .55; transition: opacity .12s ease, color .12s ease; }
+      .dsh-hub-star { flex: none; border: 0; background: transparent; color: var(--dsw-alias-label-tertiary, #7d828a); font-size: clamp(14px, 1vw, 17px); line-height: 1; padding: 2px 4px; border-radius: 5px; cursor: pointer; opacity: .55; transition: opacity .12s ease, color .12s ease; }
       .dsh-hub-row:hover .dsh-hub-star { opacity: 1; }
       .dsh-hub-row.fav .dsh-hub-star { color: #e8a33d; opacity: 1; }
       .dsh-hub-star:hover { color: #e8a33d; }
       .dsh-hub-main { flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 3px; }
-      .dsh-hub-title { color: var(--dsw-alias-label-primary, #e6e8ea); font-size: 13px; font-weight: 500; line-height: 1.4; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+      .dsh-hub-title { color: var(--dsw-alias-label-primary, #e6e8ea); font-size: clamp(13px, 0.95vw, 15px); font-weight: 500; line-height: 1.4; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
       .dsh-hub-row:hover .dsh-hub-title { color: var(--dsw-alias-label-primary, #ffffff); }
-      .dsh-hub-meta { color: var(--dsw-alias-label-tertiary, #7d828a); font-size: 11px; display: flex; gap: 7px; align-items: center; }
-      .dsh-hub-meta .dsh-hub-cwd { padding: 0 7px; line-height: 16px; background: var(--dsw-alias-fill-tertiary, rgba(127,127,127,.12)); border-radius: 4px; font-size: 10.5px; }
-      .dsh-hub-dot { width: 7px; height: 7px; border-radius: 50%; background: #3fb96f; animation: dsh-hub-pulse 1.6s ease-in-out infinite; }
+      .dsh-hub-meta { color: var(--dsw-alias-label-tertiary, #7d828a); font-size: clamp(10.5px, 0.78vw, 12.5px); display: flex; gap: 8px; align-items: center; min-width: 0; }
+      .dsh-hub-meta .dsh-hub-cwd { padding: 0 8px; line-height: clamp(16px, 1.2vw, 20px); background: var(--dsw-alias-fill-tertiary, rgba(127,127,127,.12)); border-radius: 4px; font-size: clamp(10px, 0.75vw, 12px); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 160px; }
+      .dsh-hub-dot { flex: none; width: 7px; height: 7px; border-radius: 50%; background: #3fb96f; animation: dsh-hub-pulse 1.6s ease-in-out infinite; }
       .dsh-hub-dot.waiting { background: #eb5a46; animation: none; }
       @keyframes dsh-hub-pulse { 0%, 100% { opacity: 1; } 50% { opacity: .35; } }
-      .dsh-hub-badge { flex: none; font-size: 11px; color: #f16a55; background: rgba(235,90,70,.12); border-radius: 999px; padding: 1px 9px; line-height: 17px; }
-      .dsh-hub-empty { color: var(--dsw-alias-label-tertiary, #6d7178); font-size: 12px; padding: 6px 10px 10px; }
+      .dsh-hub-badge { flex: none; font-size: clamp(10.5px, 0.8vw, 12px); color: #f16a55; background: rgba(235,90,70,.12); border-radius: 999px; padding: 1px 9px; line-height: 17px; }
+      .dsh-hub-empty { color: var(--dsw-alias-label-tertiary, #6d7178); font-size: clamp(11.5px, 0.85vw, 13px); padding: 6px 10px 10px; }
       .dsh-hub-error { color: #eb5a46; font-size: 12px; padding: 12px; }
     `)
 
@@ -143,13 +154,13 @@ window.__ModuleLoader__.load({
     }
 
     function Section(props) {
-      const { id, label, items, empty, onOpen, onStar } = props;
+      const { id, label, items, empty, onOpen, onStar, grid } = props;
       const children = [
         h('div', { key: 'head', className: 'dsh-hub-head' }, [
           h('span', { key: 'label' }, label),
           h('span', { key: 'count', className: 'dsh-hub-count' }, String(items.length))
         ]),
-        h('div', { key: 'rows', className: 'dsh-hub-rows' },
+        h('div', { key: 'rows', className: grid === true ? 'dsh-hub-rows grid' : 'dsh-hub-rows' },
           items.length === 0
             ? [h('div', { key: 'empty', className: 'dsh-hub-empty' }, empty)]
             : items.map((item) => h(Row, {
@@ -212,11 +223,21 @@ window.__ModuleLoader__.load({
       if (error !== null) return h('div', { className: 'dsh-hub' }, h('div', { className: 'dsh-hub-error' }, '加载失败：' + error));
       const sections = data?.sections ?? null;
       if (sections === null) return h('div', { className: 'dsh-hub' }, h('div', { className: 'dsh-hub-empty' }, '加载中…'));
+      const kpi = (num, label, cls) => h('div', { className: 'dsh-hub-kpi' }, [
+        h('div', { key: 'n', className: 'dsh-hub-kpi-num' }, String(num)),
+        h('div', { key: 'l', className: 'dsh-hub-kpi-label' }, [h('span', { key: 'a', className: 'dsh-hub-kpi-accent ' + cls }), label])
+      ]);
       return h('div', { className: 'dsh-hub' },
-        h(Section, { id: 'dsh-hub-waiting', label: '等你回答', items: sections.waiting, empty: '没有在等你的会话。', onOpen: open, onStar: star }),
-        h(Section, { id: 'dsh-hub-running', label: '正在跑', items: sections.running, empty: '当前没有正在运行的会话。', onOpen: open, onStar: star }),
-        h(Section, { id: 'dsh-hub-favorites', label: '收藏', items: sections.favorites, empty: '点条目上的星标即可收藏。', onOpen: open, onStar: star }),
-        h(Section, { id: 'dsh-hub-recent', label: '最近', items: sections.recent, empty: '还没有会话。', onOpen: open, onStar: star })
+        h('div', { key: 'kpis', className: 'dsh-hub-kpis' },
+          kpi(sections.waiting.length, '等你回答', 'red'),
+          kpi(sections.running.length, '正在跑', 'green'),
+          kpi(sections.favorites.length, '收藏', 'amber'),
+          kpi(sections.recent.length, '最近会话', 'grey')),
+        h('div', { key: 'g1', className: 'dsh-hub-grid2' },
+          h(Section, { id: 'dsh-hub-waiting', label: '等你回答', items: sections.waiting, empty: '没有在等你的会话。', onOpen: open, onStar: star }),
+          h(Section, { id: 'dsh-hub-running', label: '正在跑', items: sections.running, empty: '当前没有正在运行的会话。', onOpen: open, onStar: star })),
+        h(Section, { key: 'fav', id: 'dsh-hub-favorites', label: '收藏', items: sections.favorites, empty: '点条目上的星标即可收藏。', onOpen: open, onStar: star }),
+        h(Section, { key: 'recent', id: 'dsh-hub-recent', label: '最近', items: sections.recent, grid: true, empty: '还没有会话。', onOpen: open, onStar: star })
       );
     }
 
