@@ -1,0 +1,17 @@
+{
+  "tab": "Session Hub",
+  "section.waiting": "Waiting for you",
+  "section.running": "Running",
+  "section.review": "Fresh results",
+  "section.favorites": "Starred",
+  "section.recent": "Recent",
+  "state.running": "running",
+  "state.waiting": "waiting",
+  "empty.waiting": "Nothing is waiting on you.",
+  "empty.running": "No sessions are running right now.",
+  "empty.review": "All caught up.",
+  "empty.favorites": "Star a session to pin it here.",
+  "empty.recent": "No sessions yet.",
+  "action.seen": "Mark as seen",
+  "action.open": "Open"
+}

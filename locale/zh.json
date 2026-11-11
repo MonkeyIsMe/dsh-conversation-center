@@ -1,0 +1,17 @@
+{
+  "tab": "会话中心",
+  "section.waiting": "等你回答",
+  "section.running": "正在跑",
+  "section.review": "待查看",
+  "section.favorites": "收藏",
+  "section.recent": "最近",
+  "state.running": "进行中",
+  "state.waiting": "等你回答",
+  "empty.waiting": "没有在等你的会话。",
+  "empty.running": "当前没有正在运行的会话。",
+  "empty.review": "都看过了。",
+  "empty.favorites": "点条目上的星标即可收藏。",
+  "empty.recent": "还没有会话。",
+  "action.seen": "标为已看",
+  "action.open": "打开"
+}

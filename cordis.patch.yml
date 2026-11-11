@@ -1,0 +1,3 @@
+- insert:
+    - id: dsh-session-hub
+      name: '@local/dsh-session-hub'

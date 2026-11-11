@@ -1,0 +1,30 @@
+{
+  "name": "@local/dsh-session-hub",
+  "version": "1.0.0",
+  "private": true,
+  "description": "会话中心：按 最近 / 收藏 / 正在跑 / 待查看 / 等你回答 分区展示全部会话。",
+  "type": "module",
+  "exports": {
+    ".": "./host.js",
+    "./client": "./client.js",
+    "./locale/*.json": "./locale/*.json",
+    "./icon": "./icon.svg"
+  },
+  "files": [
+    "host.js",
+    "impl.js",
+    "client.js",
+    "cordis.patch.yml",
+    "locale/*.json",
+    "icon.svg"
+  ],
+  "dsh": {
+    "bundle": {
+      "patch": "./cordis.patch.yml"
+    },
+    "client": {
+      "platform": "web",
+      "immediately": true
+    }
+  }
+}
