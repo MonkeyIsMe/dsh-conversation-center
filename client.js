@@ -42,7 +42,7 @@ window.__ModuleLoader__.load({
       .dsh-hub-top { display: flex; align-items: baseline; gap: 12px; padding: 0 2px 2px; }
       .dsh-hub-top-title { font-size: clamp(16px, 1.25vw, 20px); font-weight: 650; color: var(--dsw-alias-label-primary, #f0f1f3); letter-spacing: .01em; }
       .dsh-hub-top-sub { font-size: clamp(11px, 0.8vw, 13px); color: var(--dsw-alias-label-tertiary, #8a8f98); }
-      .dsh-hub-kpis { display: grid; grid-template-columns: repeat(4, 1fr); gap: var(--hub-gap); }
+      .dsh-hub-kpis { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: var(--hub-gap); }
       .dsh-hub-kpi { display: flex; flex-direction: column; gap: 4px; padding: clamp(12px, 1.1vw, 20px) clamp(14px, 1.3vw, 24px); border-radius: 14px; background: var(--dsw-alias-fill-secondary, rgba(127,127,127,.06)); border: 1px solid var(--dsw-alias-border, rgba(127,127,127,.10)); cursor: default; }
       .dsh-hub-kpi-num { font-size: clamp(22px, 2vw, 32px); font-weight: 650; font-variant-numeric: tabular-nums; line-height: 1.1; color: var(--dsw-alias-label-primary, #f0f1f3); }
       .dsh-hub-kpi-label { font-size: clamp(11.5px, 0.85vw, 13px); color: var(--dsw-alias-label-tertiary, #8a8f98); display: flex; align-items: center; gap: 7px; }
@@ -51,6 +51,8 @@ window.__ModuleLoader__.load({
       .dsh-hub-kpi-accent.green { background: #3fb96f; }
       .dsh-hub-kpi-accent.amber { background: #e8a33d; }
       .dsh-hub-kpi-accent.grey { background: var(--dsw-alias-label-tertiary, #7d828a); }
+      .dsh-hub-kpi-accent.blue { background: #4a9eff; }
+      .dsh-hub-review .dsh-hub-count { background: rgba(74, 158, 255, .16); color: #6ab0ff; }
       .dsh-hub-grid2 { display: grid; grid-template-columns: 1fr 1fr; gap: var(--hub-gap); align-items: start; }
       .dsh-hub-section { background: var(--dsw-alias-fill-secondary, rgba(127,127,127,.06)); border: 1px solid var(--dsw-alias-border, rgba(127,127,127,.10)); border-radius: 12px; padding: clamp(10px, 0.9vw, 16px) clamp(12px, 1.1vw, 18px) 8px; min-width: 0; }
       .dsh-hub-head { display: flex; align-items: center; gap: 8px; padding: 2px 4px clamp(8px, 0.7vw, 12px); color: var(--dsw-alias-label-secondary, #9aa0a6); font-size: clamp(12px, 0.85vw, 13.5px); font-weight: 600; letter-spacing: .05em; }
@@ -59,7 +61,7 @@ window.__ModuleLoader__.load({
       .dsh-hub-running .dsh-hub-count { background: rgba(63, 185, 111, .16); color: #4ec27e; }
       .dsh-hub-favorites .dsh-hub-count { background: rgba(232, 163, 61, .16); color: #e8a33d; }
       .dsh-hub-rows { display: flex; flex-direction: column; }
-      .dsh-hub-rows.grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(clamp(280px, 22vw, 420px), 1fr)); gap: 2px 10px; }
+      .dsh-hub-rows.grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(clamp(240px, 18vw, 360px), 1fr)); gap: 2px 10px; }
       .dsh-hub-row { display: flex; align-items: center; gap: 10px; padding: clamp(8px, 0.75vw, 12px) clamp(10px, 0.9vw, 14px); border-radius: 9px; cursor: pointer; transition: background .12s ease; min-width: 0; }
       .dsh-hub-row:hover { background: var(--dsw-alias-fill-tertiary, rgba(127,127,127,.09)); }
       .dsh-hub-star { flex: none; border: 0; background: transparent; color: var(--dsw-alias-label-tertiary, #7d828a); font-size: clamp(14px, 1vw, 17px); line-height: 1; padding: 2px 4px; border-radius: 5px; cursor: pointer; opacity: .55; transition: opacity .12s ease, color .12s ease; }
@@ -207,8 +209,9 @@ window.__ModuleLoader__.load({
       }, [load]);
 
       const open = useCallback(async (item) => {
-                if (props.openSession(item.id) === false) console.warn('[dsh-session-hub] uiWorkspace.openSession 不可用');
-      }, [props, data, load]);
+        if (props.openSession(item.id) === false) console.warn('[dsh-session-hub] uiWorkspace.openSession 不可用');
+        try { await call(undefined, 'seen', { id: item.id }); } catch { /* 下次轮询自动恢复 */ }
+      }, [props]);
 
       const star = useCallback(async (item) => {
         setBusyId(item.id);
@@ -232,10 +235,12 @@ window.__ModuleLoader__.load({
           kpi(sections.waiting.length, '等你回答', 'red'),
           kpi(sections.running.length, '正在跑', 'green'),
           kpi(sections.favorites.length, '收藏', 'amber'),
+          kpi(sections.review.length, '没看过', 'blue'),
           kpi(sections.recent.length, '最近会话', 'grey')),
         h('div', { key: 'g1', className: 'dsh-hub-grid2' },
           h(Section, { id: 'dsh-hub-waiting', label: '等你回答', items: sections.waiting, empty: '没有在等你的会话。', onOpen: open, onStar: star }),
           h(Section, { id: 'dsh-hub-running', label: '正在跑', items: sections.running, empty: '当前没有正在运行的会话。', onOpen: open, onStar: star })),
+        h(Section, { key: 'review', id: 'dsh-hub-review', label: '没看过', items: sections.review, grid: true, empty: '做完还没看的会话会出现在这里。', onOpen: open, onStar: star }),
         h(Section, { key: 'fav', id: 'dsh-hub-favorites', label: '收藏', items: sections.favorites, empty: '点条目上的星标即可收藏。', onOpen: open, onStar: star }),
         h(Section, { key: 'recent', id: 'dsh-hub-recent', label: '最近', items: sections.recent, grid: true, empty: '还没有会话。', onOpen: open, onStar: star })
       );

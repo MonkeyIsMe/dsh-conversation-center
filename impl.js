@@ -170,6 +170,7 @@ export function apply(ctx) {
       const header = record?.header ?? {};
       const id = header?.id;
       if (typeof id !== 'string' || id === '') continue;
+      if (header.origin === 'subagent' || typeof header.parentSession === 'string') continue;
       const base = {
         id,
         cwd: typeof header.cwd === 'string' ? header.cwd : '',
